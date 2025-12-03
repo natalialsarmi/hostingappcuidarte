@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CuidArte - Cuidado Domiciliario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #98D8C8 0%, #6BCF7E 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .phone-container {
+            max-width: 375px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            min-height: 667px;
+        }
+
+        .status-bar {
+            background: #000;
+            color: #fff;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #6BCF7E 0%, #4FB8A5 100%);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .app-logo {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .app-logo img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .app-title-cuid {
+            color: #D4F1E8;
+        }
+
+        .app-title-arte {
+            color: #1a5a47;
+        }
+
+        .navigation-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 5px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #2D8B6D;
+            background: #fff;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #2D8B6D;
+        }
+
+        .content {
+            padding: 20px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            background: #fff;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .welcome-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #98D8C8 0%, #6BCF7E 100%);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(107, 207, 126, 0.3);
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .welcome-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6BCF7E 0%, #4FB8A5 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(107, 207, 126, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(107, 207, 126, 0.4);
+            background: linear-gradient(135deg, #2D8B6D 0%, #247A61 100%);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #2D8B6D;
+            border: 2px solid #2D8B6D;
+            padding: 13px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #2D8B6D;
+            color: white;
+        }
+
+        .dashboard-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online { background: #2ecc71; }
+        .status-busy { background: #f39c12; }
+        .status-offline { background: #e74c3c; }
+
+        .caregiver-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .caregiver-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .caregiver-item:hover {
+            background: #D4F1E8;
+            transform: translateX(5px);
+        }
+
+        .caregiver-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #98D8C8 0%, #6BCF7E 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .caregiver-info h4 {
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+        }
+
+        .caregiver-info p {
+            margin: 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .rating {
+            margin-left: auto;
+            color: #f39c12;
+        }
+
+        .monitoring-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .monitoring-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .monitoring-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .monitoring-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        .chat-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .chat-message.sent {
+            background: #6BCF7E;
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .chat-message.received {
+            background: #f1f3f4;
+            color: #2c3e50;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chat-input button {
+            padding: 10px 15px;
+            background: #6BCF7E;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .emergency-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #6BCF7E 0%, #4FB8A5 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2ecc71;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .floating-action {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6BCF7E 0%, #4FB8A5 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(107, 207, 126, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .floating-action:hover {
+            transform: scale(1.1);
+        }
+
+        /* Estilos de Cámara */
+        .camera-section {
+            margin-bottom: 25px;
+            background: #D4F1E8;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px dashed #6BCF7E;
+        }
+
+        .camera-container {
+            position: relative;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            min-height: 200px;
+        }
+
+        .camera-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #7f8c8d;
+            text-align: center;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .camera-placeholder:hover {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            transform: scale(1.02);
+        }
+
+        .camera-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .camera-placeholder p {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 10px 0 5px 0;
+            color: #bdc3c7;
+        }
+
+        .camera-placeholder small {
+            font-size: 14px;
+            opacity: 0.8;
+            color: #95a5a6;
+        }
+
+        .camera-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .camera-btn {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .camera-btn:not(.secondary) {
+            background: linear-gradient(135deg, #6BCF7E 0%, #4FB8A5 100%);
+            color: white;
+            box-shadow: 0 3px 10px rgba(107, 207, 126, 0.3);
+        }
+
+        .camera-btn:not(.secondary):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 207, 126, 0.4);
+            background: linear-gradient(135deg, #2D8B6D 0%, #247A61 100%);
+        }
+
+        .camera-btn.secondary {
+            background: #fff;
+            color: #2D8B6D;
+            border: 2px solid #6BCF7E;
+        }
+
+        .camera-btn.secondary:hover {
+            background: #6BCF7E;
+            color: white;
+        }
+
+        .camera-btn.active {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .camera-status {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #7f8c8d;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .live-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .recording-dot {
+            width: 8px;
+            height: 8px;
+            background: #e74c3c;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse 1s infinite;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        #liveVideo {
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 400px) {
+            .camera-controls {
+                flex-direction: column;
+            }
+            
+            .camera-btn {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .phone-container {
+                margin: 10px;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>🔋 85%</span>
+        </div>
+
+        <div class="app-header">
+            <div class="app-logo">
+                <svg viewBox="0 0 100 100" width="35" height="35">
+                    <circle cx="50" cy="50" r="45" fill="#6BCF7E" opacity="0.3"/>
+                    <circle cx="50" cy="50" r="35" fill="#4FB8A5" opacity="0.5"/>
+                    <circle cx="50" cy="50" r="25" fill="#2D8B6D"/>
+                    <path d="M 35 50 Q 50 35, 65 50 Q 50 65, 35 50" fill="white"/>
+                </svg>
+            </div>
+            <div class="app-title">
+                <span class="app-title-cuid">Cuid</span><span class="app-title-arte">Arte</span>
+            </div>
+        </div>
+
+        <div class="navigation-tabs">
+            <button class="tab active" onclick="showScreen('welcome')">🏠 Inicio</button>
+            <button class="tab" onclick="showScreen('dashboard')">📊 Panel</button>
+            <button class="tab" onclick="showScreen('caregivers')">👥 Cuidadores</button>
+            <button class="tab" onclick="showScreen('monitoring')">📱 Monitor</button>
+            <button class="tab" onclick="showScreen('account')">⚙️ Cuenta</button>
+        </div>
+
+        <div class="content">
+            <!-- Pantalla de Bienvenida -->
+            <div id="welcome" class="screen active">
+                <div class="welcome-screen">
+                    <div class="welcome-icon">💙</div>
+                    <h2 class="welcome-title">¡Bienvenido a CuidArte!</h2>
+                    <p class="welcome-description">
+                        La plataforma líder en Colombia para cuidado domiciliario de adultos mayores. 
+                        Conectamos familias con cuidadores profesionales certificados, brindando tranquilidad y cuidado de calidad.
+                    </p>
+                    
+                    <button class="btn-primary" onclick="showRegistration()">🚀 Comenzar Ahora</button>
+                    <button class="btn-secondary" onclick="showLogin()">👤 Iniciar Sesión</button>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: #D4F1E8; border-radius: 15px;">
+                        <h3 style="color: #2D8B6D; margin-bottom: 15px; text-align: center;">🌟 Nuestra Propuesta de Valor</h3>
+                        <div class="value-grid">
+                            <div class="value-item">
+                                <div class="value-icon">👨‍👩‍👧‍👦</div>
+                                <h4>Para Familias</h4>
+                                <p>Tranquilidad, confianza y reducción del estrés familiar</p>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">👩‍⚕️</div>
+                                <h4>Para Cuidadores</h4>
+                                <p>Empleo formal con remuneración justa y capacitación continua</p>
+                            </div>
+                            <div class="value-item">
+                                <div class="value-icon">🏛️</div>
+                                <h4>Para la Sociedad</h4>
+                                <p>Cuidado preventivo, reducción de urgencias y envejecimiento activo</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 10px; border: 2px solid #98D8C8;">
+                        <p style="font-size: 14px; color: #2D8B6D; margin: 0; text-align: center; font-weight: 600;">
+                            ✅ Cuidadores certificados con verificación de antecedentes<br>
+                            ✅ Seguimiento en tiempo real con geolocalización<br>
+                            ✅ Plataforma digital segura y trazable<br>
+                            ✅ Sistema de calificación y reportes diarios
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Control -->
+            <div id="dashboard" class="screen">
+                <button class="emergency-btn" onclick="showNotification('Llamada de emergencia activada')">
+                    🚨 EMERGENCIA
+                </button>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #2ecc71;">
+                            <svg viewBox="0 0 100 100" width="25" height="25">
+                                <circle cx="50" cy="50" r="45" fill="white" opacity="0.3"/>
+                                <circle cx="50" cy="50" r="35" fill="white" opacity="0.5"/>
+                                <circle cx="50" cy="50" r="25" fill="white"/>
+                                <path d="M 35 50 Q 50 35, 65 50 Q 50 65, 35 50" fill="#2ecc71"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="card-title">Estado de José María</div>
+                            <div class="card-subtitle">
+                                <span class="status-indicator status-online"></span>
+                                Cuidador presente - Todo bien
+                            </div>
+                        </div>
+                    </div>
+                    <p>Última actualización: Hace 15 minutos</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #3498db;">📅</div>
+                        <div>
+                            <div class="card-title">Próxima Cita</div>
+                            <div class="card-subtitle">Hoy 2:30 PM - Control médico</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                    <p>Preparación en progreso</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e74c3c;">💊</div>
+                        <div>
+                            <div class="card-title">Medicamentos</div>
+                            <div class="card-subtitle">3 de 4 dosis administradas hoy</div>
+                        </div>
+                    </div>
+                    <p>Próxima dosis: 6:00 PM</p>
+                </div>
+            </div>
+
+            <!-- Lista de Cuidadores -->
+            <div id="caregivers" class="screen">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #6BCF7E;">🎯</div>
+                        <div style="flex: 1;">
+                            <div class="card-title">AI-Matching Inteligente</div>
+                            <div class="card-subtitle">Fit Score Predictivo (0-100)</div>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="showNotification('🎯 Iniciando proceso de matching inteligente...')">
+                        Solicitar Servicio
+                    </button>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3 style="margin-bottom: 15px;">Cuidadores Certificados Disponibles</h3>
+                    <div class="caregiver-list">
+                        <div class="caregiver-item" onclick="selectCaregiver('María', 94)">
+                            <div class="caregiver-avatar">MG</div>
+                            <div class="caregiver-info">
+                                <h4>María González</h4>
+                                <p>👩‍⚕️ Enfermera Geriátrica - 8 años exp.</p>
+                                <p>🏆 Certificada en primeros auxilios</p>
+                                <p><span class="status-indicator status-online"></span>Disponible ahora</p>
+                            </div>
+                            <div class="rating">
+                                <div class="fit-score">94</div>
+                                <div style="font-size: 10px; color: #2D8B6D;">Fit Score</div>
+                            </div>
+                        </div>
+
+                        <div class="caregiver-item" onclick="selectCaregiver('Ana', 87)">
+                            <div class="caregiver-avatar">AR</div>
+                            <div class="caregiver-info">
+                                <h4>Ana Rodríguez</h4>
+                                <p>👩‍⚕️ Auxiliar Certificada - 5 años exp.</p>
+                                <p>🏆 Formación en cuidado geriátrico</p>
+                                <p><span class="status-indicator status-busy"></span>Ocupada hasta 4 PM</p>
+                            </div>
+                            <div class="rating">
+                                <div class="fit-score">87</div>
+                                <div style="font-size: 10px; color: #2D8B6D;">Fit Score</div>
+                            </div>
+                        </div>
+
+                        <div class="caregiver-item" onclick="selectCaregiver('Carlos', 91)">
+                            <div class="caregiver-avatar">CM</div>
+                            <div class="caregiver-info">
+                                <h4>Carlos Martínez</h4>
+                                <p>👨‍⚕️ Fisioterapeuta - 12 años exp.</p>
+                                <p>🏆 Especialista en rehabilitación</p>
+                                <p><span class="status-indicator status-online"></span>Disponible mañana</p>
+                            </div>
+                            <div class="rating">
+                                <div class="fit-score">91</div>
+                                <div style="font-size: 10px; color: #2D8B6D;">Fit Score</div>
+                            </div>
+                        </div>
+
+                        <div class="caregiver-item" onclick="selectCaregiver('Lucia', 82)">
+                            <div class="caregiver-avatar">LM</div>
+                            <div class="caregiver-info">
+                                <h4>Lucía Morales</h4>
+                                <p>👩‍⚕️ Técnica en Gerontología - 6 años</p>
+                                <p>🏆 Antecedentes verificados</p>
+                                <p><span class="status-indicator status-online"></span>Disponible ahora</p>
+                            </div>
+                            <div class="rating">
+                                <div class="fit-score">82</div>
+                                <div style="font-size: 10px; color: #2D8B6D;">Fit Score</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monitoreo en Tiempo Real -->
+            <div id="monitoring" class="screen">
+                <div class="dashboard-card">
+                    <h3 style="margin-bottom: 15px;">Monitoreo en Tiempo Real</h3>
+                    
+                    <!-- Cámara de Vigilancia -->
+                    <div class="camera-section">
+                        <div class="camera-container" id="cameraContainer">
+                            <div class="camera-placeholder" id="cameraPlaceholder">
+                                <div class="camera-icon">📹</div>
+                                <p>Cámara Desconectada</p>
+                                <small>Toca para activar la vista en vivo</small>
+                            </div>
+                            <video id="liveVideo" style="display: none;" width="100%" height="200" autoplay muted></video>
+                        </div>
+                        
+                        <div class="camera-controls">
+                            <button class="camera-btn" onclick="toggleCamera()" id="cameraToggle">
+                                📹 Activar Cámara
+                            </button>
+                            <button class="camera-btn secondary" onclick="takeSnapshot()">
+                                📸 Captura
+                            </button>
+                            <button class="camera-btn secondary" onclick="toggleAudio()">
+                                🔊 Audio
+                            </button>
+                        </div>
+                        
+                        <div class="camera-status">
+                            <span class="status-indicator status-offline" id="cameraStatus"></span>
+                            <span>Estado: <span id="cameraStatusText">Desconectado</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="monitoring-grid">
+                        <div class="monitoring-item">
+                            <div class="monitoring-value">72</div>
+                            <div class="monitoring-label">Pulsaciones</div>
+                        </div>
+                        <div class="monitoring-item">
+                            <div class="monitoring-value">36.5°C</div>
+                            <div class="monitoring-label">Temperatura</div>
+                        </div>
+                        <div class="monitoring-item">
+                            <div class="monitoring-value">120/80</div>
+                            <div class="monitoring-label">Presión</div>
+                        </div>
+                        <div class="monitoring-item">
+                            <div class="monitoring-value">98%</div>
+                            <div class="monitoring-label">Oxígeno</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <h4>🔄 Actividades Registradas</h4>
+                        <div style="display: flex; align-items: center; margin: 8px 0;">
+                            <span class="status-indicator status-online" style="margin-right: 10px;"></span>
+                            <span style="color: #666;">14:30 - Almuerzo completado</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin: 8px 0;">
+                            <span class="status-indicator status-online" style="margin-right: 10px;"></span>
+                            <span style="color: #666;">14:45 - Medicamento administrado</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin: 8px 0;">
+                            <span class="status-indicator status-online" style="margin-right: 10px;"></span>
+                            <span style="color: #666;">15:00 - Descanso en jardín</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin: 8px 0;">
+                            <span class="status-indicator status-online" style="margin-right: 10px;"></span>
+                            <span style="color: #2ecc71;">Cámara</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin: 8px 0;">
+                            <span class="status-indicator status-online" style="margin-right: 10px;"></span>
+                            <span style="color: #6BCF7E;">Geolocalización</span>
+                        </div>
+                        <div style="display: flex; align-items: center; margin: 8px 0;">
+                            <span class="status-indicator status-online" style="margin-right: 10px;"></span>
+                            <span style="color: #4FB8A5;">Signos vitales</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat integrado en Monitor -->
+                <div class="dashboard-card">
+                    <h3 style="margin-bottom: 15px;">💬 Chat con Cuidador</h3>
+                    
+                    <div class="caregiver-chat-header">
+                        <div class="caregiver-avatar">MG</div>
+                        <div class="caregiver-chat-info">
+                            <h4>María González</h4>
+                            <p><span class="status-indicator status-online"></span>En línea</p>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" onclick="showNotification('Llamando...')">📞</button>
+                            <button class="chat-action-btn" onclick="showNotification('Videollamada iniciada')">📹</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="chat-message received">
+                            <strong>María González</strong><br>
+                            <small>14:30</small><br>
+                            José María almorzó muy bien y tomó su medicamento. Ahora descansa cómodamente.
+                        </div>
+                        <div class="chat-message sent">
+                            <small>14:35</small><br>
+                            Excelente María, gracias por el reporte.
+                        </div>
+                        <div class="chat-message received">
+                            <strong>María</strong><br>
+                            <small>15:15</small><br>
+                            📸 Signos vitales normales: 72 ppm, 120/80, 36.5°C, saturación 98%.
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <input type="text" placeholder="Escribe tu mensaje..." id="chatInput">
+                        <button onclick="sendMessage()">📤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat -->
+            <div id="chat" class="screen">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #9b59b6;">💬</div>
+                        <div>
+                            <div class="card-title">Comunicación en Tiempo Real</div>
+                            <div class="card-subtitle">Contacto directo con tu cuidador certificado</div>
+                        </div>
+                    </div>
+                    <p style="color: #555; line-height: 1.6; font-size: 14px;">
+                        Sistema de mensajería integrado para mantener comunicación fluida con el cuidador, 
+                        recibir reportes digitales detallados y solicitar información en tiempo real.
+                    </p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="caregiver-chat-header">
+                        <div class="caregiver-avatar">MG</div>
+                        <div class="caregiver-chat-info">
+                            <h4>María González</h4>
+                            <p><span class="status-indicator status-online"></span>En línea - Cuidando a José María</p>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="chat-action-btn" onclick="showNotification('Llamando a María...')">📞</button>
+                            <button class="chat-action-btn" onclick="showNotification('Videollamada iniciada')">📹</button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="chat-message received">
+                            <strong>María González - Cuidadora Certificada</strong><br>
+                            <small>14:30</small><br>
+                            Buenas tardes familia. José María almorzó muy bien y tomó su medicamento a tiempo. 
+                            Ahora está descansando cómodamente. El seguimiento con geolocalización está activo 
+                            y los signos vitales han sido registrados en el sistema.
+                        </div>
+                        <div class="chat-message sent">
+                            <small>14:35</small><br>
+                            Excelente María, muchas gracias por el reporte detallado. ¿Cómo está su ánimo hoy? 
+                            ¿Ha mencionado alguna molestia?
+                        </div>
+                        <div class="chat-message received">
+                            <strong>María González</strong><br>
+                            <small>14:37</small><br>
+                            Está de muy buen humor y participativo. Me contó historias de su juventud mientras almorzábamos. 
+                            No ha mencionado ninguna molestia. Se ve tranquilo y orientado. Todo registrado en la plataforma.
+                        </div>
+                        <div class="chat-message received">
+                            <strong>María González</strong><br>
+                            <small>15:15</small><br>
+                            📸 Le tomé una foto descansando en el jardín. Signos vitales normales: 
+                            72 ppm, 120/80, 36.5°C, saturación 98%. El reporte completo ya está disponible en el sistema.
+                        </div>
+                        <div class="chat-message sent">
+                            <small>15:20</small><br>
+                            Perfecto María, muy completo el seguimiento. ¿Ya le diste la merienda de la tarde?
+                        </div>
+                    </div>
+
+                    <div class="chat-input">
+                        <input type="text" placeholder="Escribe tu mensaje..." id="chatInput">
+                        <button onclick="sendMessage()">📤</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3 style="margin-bottom: 15px;">📊 Transparencia y Trazabilidad</h3>
+                    <div style="background: #D4F1E8; padding: 15px; border-radius: 10px;">
+                        <p style="color: #2D8B6D; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Sistema de Calificación:</strong><br>
+                            Después de cada servicio, califique la experiencia del cuidador. 
+                            Su retroalimentación mejora el algoritmo de asignación y fortalece la calidad del servicio.
+                        </p>
+                    </div>
+                    <div style="background: #fff; padding: 15px; border-radius: 10px; margin-top: 10px; border: 2px solid #98D8C8;">
+                        <p style="color: #555; font-size: 14px; line-height: 1.6; margin: 0;">
+                            <strong>Pagos Seguros y Trazables:</strong><br>
+                            Módulo integrado que garantiza relaciones formales, transparencia en transacciones 
+                            y protección para familias y cuidadores. Alineado con CONPES 4110 (DNP, 2024).
+                        </p>
+                    </div>
+                </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn emergency" onclick="showNotification('🚨 Alerta de emergencia enviada')">
+                            🚨 Emergencia
+                        </button>
+                        <button class="quick-action-btn" onclick="showNotification('📍 Ubicación del cuidador solicitada')">
+                            📍 Ubicación
+                        </button>
+                        <button class="quick-action-btn" onclick="showNotification('📊 Reporte diario solicitado')">
+                            📊 Reporte
+                        </button>
+                        <button class="quick-action-btn" onclick="showNotification('📷 Foto actual solicitada')">
+                            📷 Foto
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Servicios -->
+            <div id="services" class="screen">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #e74c3c;">⚙️</div>
+                        <div>
+                            <div class="card-title">Servicios CuidArte</div>
+                            <div class="card-subtitle">Cuidado personalizado y trazable</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solicitud Flexible -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #f39c12;">⏰</div>
+                        <div>
+                            <div class="card-title">Solicitud Flexible</div>
+                            <div class="card-subtitle">Por horas o cuidado permanente</div>
+                        </div>
+                    </div>
+                    <div class="service-options">
+                        <button class="service-btn" onclick="selectService('hourly')">
+                            🕐 Por Horas<br>
+                            <small>Desde $25.000/hora</small>
+                        </button>
+                        <button class="service-btn" onclick="selectService('daily')">
+                            📅 Diario<br>
+                            <small>8-12 horas/día</small>
+                        </button>
+                        <button class="service-btn" onclick="selectService('permanent')">
+                            🏠 Permanente<br>
+                            <small>24/7 en casa</small>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Planes de Suscripción -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #2ecc71;">💳</div>
+                        <div>
+                            <div class="card-title">Planes de Suscripción</div>
+                            <div class="card-subtitle">Tarifas preferenciales mensuales</div>
+                        </div>
+                    </div>
+                    <div class="subscription-plans">
+                        <div class="plan-card">
+                            <h4>Plan Básico</h4>
+                            <div class="plan-price">$450.000/mes</div>
+                            <ul class="plan-features">
+                                <li>✅ 60 horas de cuidado</li>
+                                <li>✅ Seguimiento básico</li>
+                                <li>✅ Chat con cuidador</li>
+                            </ul>
+                        </div>
+                        <div class="plan-card featured">
+                            <h4>Plan Premium</h4>
+                            <div class="plan-price">$750.000/mes</div>
+                            <ul class="plan-features">
+                                <li>✅ 100 horas de cuidado</li>
+                                <li>✅ Monitoreo 24/7</li>
+                                <li>✅ Reportes médicos</li>
+                                <li>✅ Cámara de vigilancia</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Servicios -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #3498db;">⚙️</div>
+                        <div>
+                            <div class="card-title">Mi Plan Actual</div>
+                            <div class="card-subtitle">Plan Premium - $750.000/mes</div>
+                        </div>
+                    </div>
+                    <div class="current-plan-info">
+                        <div class="plan-usage">
+                            <div class="usage-item">
+                                <span>Horas utilizadas este mes:</span>
+                                <strong>67/100 horas</strong>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 67%;"></div>
+                            </div>
+                        </div>
+                        <div class="plan-benefits">
+                            <p style="margin: 10px 0; color: #2ecc71;">✅ Monitoreo 24/7 activo</p>
+                            <p style="margin: 10px 0; color: #2ecc71;">✅ Cámara de vigilancia disponible</p>
+                            <p style="margin: 10px 0; color: #2ecc71;">✅ Reportes médicos habilitados</p>
+                        </div>
+                        <button class="btn-secondary" onclick="showNotification('Configuración de plan actualizada')">
+                            Modificar Plan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-action" onclick="showNotification('Función de ayuda activada')" title="Ayuda">
+        ❓
+    </button>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Mostrar la pantalla seleccionada
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+            
+            // Actualizar tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Encontrar y activar el tab correspondiente
+            const clickedTab = Array.from(tabs).find(tab => 
+                tab.textContent.toLowerCase().includes(getTabName(screenId))
+            );
+            if (clickedTab) {
+                clickedTab.classList.add('active');
+            }
+        }
+
+        function getTabName(screenId) {
+            const names = {
+                'welcome': 'inicio',
+                'dashboard': 'panel',
+                'caregivers': 'cuidadores',
+                'monitoring': 'monitor',
+                'account': 'cuenta'
+            };
+            return names[screenId] || screenId;
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function showRegistration() {
+            showNotification('Redirigiendo a registro...');
+        }
+
+        function showLogin() {
+            showNotification('Redirigiendo a inicio de sesión...');
+        }
+
+        function selectCaregiver(name, fitScore) {
+            showNotification(`🎯 Fit Score: ${fitScore}/100 - Conectando con ${name}...`);
+        }
+
+        function selectService(serviceType) {
+            const services = {
+                'hourly': 'Servicio por horas seleccionado - Desde $25.000/hora',
+                'daily': 'Servicio diario seleccionado - 8-12 horas/día',
+                'permanent': 'Cuidado permanente seleccionado - 24/7 en casa'
+            };
+            showNotification(services[serviceType]);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatContainer = document.querySelector('.chat-container');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'chat-message sent';
+                messageDiv.textContent = message;
+                chatContainer.appendChild(messageDiv);
+                
+                input.value = '';
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Simular respuesta automática
+                setTimeout(() => {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'chat-message received';
+                    responseDiv.innerHTML = '<strong>María</strong><br>Mensaje recibido, te responderé pronto.';
+                    chatContainer.appendChild(responseDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }, 2000);
+            }
+        }
+
+        // Simular actualizaciones en tiempo real
+        setInterval(() => {
+            const values = document.querySelectorAll('.monitoring-value');
+            values[0].textContent = Math.floor(Math.random() * 10) + 70; // Pulsaciones
+        }, 5000);
+
+        // Variables para la cámara
+        let cameraActive = false;
+        let videoStream = null;
+
+        // Función para activar/desactivar cámara
+        async function toggleCamera() {
+            const video = document.getElementById('liveVideo');
+            const placeholder = document.getElementById('cameraPlaceholder');
+            const toggleBtn = document.getElementById('cameraToggle');
+            const statusIndicator = document.getElementById('cameraStatus');
+            const statusText = document.getElementById('cameraStatusText');
+            const container = document.getElementById('cameraContainer');
+
+            if (!cameraActive) {
+                try {
+                    // Solicitar acceso a la cámara
+                    videoStream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { 
+                            width: { ideal: 640 },
+                            height: { ideal: 480 }
+                        }, 
+                        audio: false 
+                    });
+                    
+                    video.srcObject = videoStream;
+                    video.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    
+                    // Agregar indicador LIVE
+                    const liveIndicator = document.createElement('div');
+                    liveIndicator.className = 'live-indicator';
+                    liveIndicator.innerHTML = '<span class="recording-dot"></span>EN VIVO';
+                    liveIndicator.id = 'liveIndicator';
+                    container.appendChild(liveIndicator);
+                    
+                    // Agregar overlay de tiempo
+                    const overlay = document.createElement('div');
+                    overlay.className = 'camera-overlay';
+                    overlay.id = 'cameraOverlay';
+                    container.appendChild(overlay);
+                    updateCameraTime();
+                    
+                    toggleBtn.textContent = '🔴 Desactivar';
+                    toggleBtn.classList.add('active');
+                    statusIndicator.className = 'status-indicator status-online';
+                    statusText.textContent = 'Conectado - Vista en vivo';
+                    cameraActive = true;
+                    
+                    showNotification('Cámara activada - Vigilancia en tiempo real iniciada');
+                    
+                } catch (error) {
+                    console.error('Error al acceder a la cámara:', error);
+                    showNotification('Error: No se pudo acceder a la cámara');
+                }
+            } else {
+                // Desactivar cámara
+                if (videoStream) {
+                    videoStream.getTracks().forEach(track => track.stop());
+                }
+                
+                video.style.display = 'none';
+                placeholder.style.display = 'flex';
+                
+                // Remover indicadores
+                const liveIndicator = document.getElementById('liveIndicator');
+                const overlay = document.getElementById('cameraOverlay');
+                if (liveIndicator) liveIndicator.remove();
+                if (overlay) overlay.remove();
+                
+                toggleBtn.textContent = '📹 Activar Cámara';
+                toggleBtn.classList.remove('active');
+                statusIndicator.className = 'status-indicator status-offline';
+                statusText.textContent = 'Desconectado';
+                cameraActive = false;
+                
+                showNotification('Cámara desactivada');
+            }
+        }
+
+        // Función para actualizar el tiempo en la cámara
+        function updateCameraTime() {
+            const overlay = document.getElementById('cameraOverlay');
+            if (overlay && cameraActive) {
+                const now = new Date();
+                overlay.textContent = now.toLocaleTimeString();
+                setTimeout(updateCameraTime, 1000);
+            }
+        }
+
+        // Función para tomar captura
+        function takeSnapshot() {
+            if (!cameraActive) {
+                showNotification('Activa la cámara primero para tomar capturas');
+                return;
+            }
+            
+            const video = document.getElementById('liveVideo');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            
+            // Simular guardado de imagen
+            showNotification('📸 Captura guardada en el historial');
+            
+            // En una implementación real, aquí se enviaría la imagen al servidor
+            console.log('Captura tomada:', canvas.toDataURL());
+        }
+
+        // Función para toggle de audio
+        function toggleAudio() {
+            if (!cameraActive) {
+                showNotification('Activa la cámara primero para el audio');
+                return;
+            }
+            
+            const audioBtn = event.target;
+            if (audioBtn.textContent.includes('🔊')) {
+                audioBtn.textContent = '🔇 Audio';
+                showNotification('Audio desactivado');
+            } else {
+                audioBtn.textContent = '🔊 Audio';
+                showNotification('Audio activado');
+            }
+        }
+
+        // Hacer que el placeholder sea clickeable
+        document.getElementById('cameraPlaceholder').addEventListener('click', toggleCamera);
+
+        // Permitir envío con Enter
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Mensaje de bienvenida
+        setTimeout(() => {
+            showNotification('¡Bienvenido a CuidArte! Tu tranquilidad es nuestra prioridad.');
+        }, 1000);
+    </script>
+</body>
+</html>
